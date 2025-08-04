@@ -23,6 +23,8 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+    # Автоматически в поле username сохраняем email, иначе будет оставаться пустым и при создании новых пользователей
+    # будет ругаться, что пользователь с таким именем уже есть
     def save(self, *args, **kwargs):
         if not self.username:
             self.username = self.email
