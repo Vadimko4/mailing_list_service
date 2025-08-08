@@ -1,9 +1,14 @@
-{% include 'users/includes/inc_menu_themes.html' %}
-{% include 'users/includes/inc_menu_def.html' %}
+<style>
+    .sidebar {
+        height: 100vh; /* Полная высота окна браузера */
+        border-right: 1px solid #ccc; /* Пример границы */
+    }
+</style>
 <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
     <div class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu"
          aria-labelledby="sidebarMenuLabel">
-        <div class="offcanvas-header"><h5 class="offcanvas-title" id="sidebarMenuLabel">Сервис рассылок "Django-Mailer"!!!</h5>
+        <div class="offcanvas-header"><h5 class="offcanvas-title" id="sidebarMenuLabel">Сервис рассылок
+            "Django-Mailer"</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu"
                     aria-label="Close"></button>
         </div>
@@ -45,20 +50,27 @@
             <hr class="my-3">
             <ul class="nav flex-column mb-auto">
                 {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" href="#">
-                    <svg class="bi" aria-hidden="true">
-                        <use xlink:href="#door-closed"></use>
-                    </svg>
-                    Выход
-                </a></li>
+                <li class="nav-item">
+                    <form action="{% url 'users:logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn active nav-link"
+                                style="border:none; background:none; text-decoration:none;">
+                            <svg class="bi" aria-hidden="true">
+                                <use xlink:href="#door-closed"></use>
+                            </svg>
+                            Выход
+                        </button>
+                    </form>
+                </li>
                 {% else %}
-                <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" href="#">
+                <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2"
+                                        href="{% url 'users:register' %}">
                     <svg class="bi" aria-hidden="true">
                         <use xlink:href="#bi-person-plus"></use>
                     </svg>
                     Регистрация
                 </a></li>
-                <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" href="#">
+                <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" href="{% url 'users:login' %}">
                     <svg class="bi" aria-hidden="true">
                         <use xlink:href="#bi-door-open"></use>
                     </svg>

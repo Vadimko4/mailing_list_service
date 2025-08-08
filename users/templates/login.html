@@ -1,17 +1,23 @@
 {% extends 'users/base.html' %}
 {% block content %}
+<style>
+    .container {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center;    /* Центрирование по вертикали */
+    height: 100vh;          /* Полная высота окна */
+}
+</style>
 <div class="container">
     <form class="row" method="post" enctype="multipart/form-data">
-        <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    Войти
-                </button>
+        <div class="card">
+            <div class="card-body">
+                {% csrf_token %}
+                {{ form.as_p }}
             </div>
+            <button type="submit" class="btn btn-primary">
+                Войти
+            </button>
         </div>
     </form>
 </div>
