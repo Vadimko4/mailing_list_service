@@ -4,7 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views import View
 from django.views.generic import CreateView, TemplateView
 
 from config.settings import EMAIL_HOST_USER
