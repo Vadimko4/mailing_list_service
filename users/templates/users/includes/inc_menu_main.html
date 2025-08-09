@@ -13,6 +13,7 @@
                     aria-label="Close"></button>
         </div>
         <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+            {% if user.is_authenticated %}
             <ul class="nav flex-column">
                 <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2 active"
                                         aria-current="page" href="#">
@@ -47,6 +48,7 @@
                     Все попытки
                 </a></li>
             </ul>
+            {% endif %}
             <hr class="my-3">
             <ul class="nav flex-column mb-auto">
                 {% if user.is_authenticated %}
