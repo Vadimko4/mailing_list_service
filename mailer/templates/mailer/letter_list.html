@@ -1,6 +1,53 @@
 {% extends 'users/base.html' %}
 {% block content %}
-
-кукуруку
-
+<style>
+    .container_c {
+    display: flex;
+    justify-content: center;
+    align-items: center;    /* Центрирование по вертикали */
+}
+    .container_r {
+    display: flex;
+    justify-content: right;
+    align-items: center;    /* Центрирование по вертикали */
+}
+</style>
+<div class="row">
+    <div class="col-3 mt-4">
+        <img src="/media/img/letters.jpg" alt="письма" height="150">
+    </div>
+    <div class="col-6 mt-4 container_c">
+        <h4 class="display-7 ">ВАШИ СООБЩЕНИЯ</h4>
+    </div>
+    <div class="col-3 mt-4 container_r">
+        <a class="btn btn-outline-primary" href="#" role="button">Создать сообщение</a>
+    </div>
+</div>
+<div class="table-responsive small">
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">ТЕМА</th>
+            <th scope="col">ПРЕВЬЮ</th>
+            <th scope="col">ДЕЙСТВИЯ</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for letter in object_list %}
+        <tr>
+            <td>{{ letter.id }}</td>
+            <td>{{ letter.subject | truncatechars:40 }}</td>
+            <td>{{ letter.content | truncatechars:60 }}</td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-link btn-sm">Изменить</button>
+                    <button type="button" class="btn btn-link btn-sm">Удалить</button>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
