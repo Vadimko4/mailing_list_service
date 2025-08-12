@@ -10,22 +10,30 @@
 </style>
 <div class="container">
     <form class="row" method="post" enctype="multipart/form-data">
-            <div class="card">
-                <div class="card-body">
+        <div class="card">
+            <div class="card-body">
+                {% if object %}
+                    <h3> Редактирование сообщения </h3>
+                    {% else %}
                     <h3> Добавление нового сообщения </h3>
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group mb-4" role="group" aria-label="Basic example">
-                        <button type="submit" class="btn btn-outline-primary">
+                {% endif %}
+                {% csrf_token %}
+                {{ form.as_p }}
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group mb-4" role="group" aria-label="Basic example">
+                    <button type="submit" class="btn btn-outline-primary">
+                        {% if object %}
                             Сохранить
-                        </button>
-                        <a class="btn btn-outline-primary" href="{% url 'mailer:letter_list' user.pk %}"
-                           role="button">Назад</a>
-                    </div>
+                            {% else %}
+                            Создать
+                            {% endif %}
+                    </button>
+                    <a class="btn btn-outline-primary" href="{% url 'mailer:letter_list' user.pk %}"
+                       role="button">Назад</a>
                 </div>
             </div>
+        </div>
     </form>
 </div>
 {% endblock %}
