@@ -41,6 +41,7 @@
             <td>{{ letter.content | truncatechars:60 }}</td>
             <td>
                 <div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="{% url 'mailer:letter_detail' letter.pk %}" class="btn btn-link btn-sm">Посмотреть</a>
                     <a href="{% url 'mailer:letter_update' letter.pk %}" class="btn btn-link btn-sm">Изменить</a>
                     <a href="{% url 'mailer:letter_delete' letter.pk %}" class="btn btn-link btn-sm">Удалить</a>
                 </div>

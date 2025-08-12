@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 
 from mailer.forms import LetterForm
 from mailer.models import Letter
@@ -14,6 +14,10 @@ class LetterListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         owner_id = self.request.user.id  # Получение id текущего пользователя
         return get_owner_letters_from_cache(owner_id)
+
+
+class LetterDetailView(LoginRequiredMixin, DetailView):
+    model = Letter
 
 
 class LetterCreateView(LoginRequiredMixin, CreateView):
