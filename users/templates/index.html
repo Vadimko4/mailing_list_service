@@ -7,7 +7,9 @@
                 <h4 class="my-0 font-weight-normal text-center">ПИСЬМА</h4>
             </div>
             <div class="card-body" align="center">
-                <img src="/media/img/letters.jpg" alt="письма" height="150">
+                <a href="{% url 'mailer:letter_list' user.pk %}">
+                    <img src="/media/img/letters.jpg" alt="письма" height="150">
+                </a>
             </div>
             <h9 class="my-0 font-weight-normal text-center mb-4">Количество писем в базе: 7</h9>
         </div>

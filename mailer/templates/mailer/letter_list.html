@@ -20,7 +20,7 @@
         <h4 class="display-7 ">ВАШИ СООБЩЕНИЯ</h4>
     </div>
     <div class="col-3 mt-4 container_r">
-        <a class="btn btn-outline-primary" href="#" role="button">Создать сообщение</a>
+        <a class="btn btn-outline-primary" href="{% url 'mailer:letter_create' %}" role="button">Создать сообщение</a>
     </div>
 </div>
 <div class="table-responsive small">
@@ -42,7 +42,7 @@
             <td>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <a href="/" class="btn btn-link btn-sm">Изменить</a>
-                    <a href="/" class="btn btn-link btn-sm">Удалить</a>
+                    <a href="{% url 'mailer:letter_delete' letter.pk %}" class="btn btn-link btn-sm">Удалить</a>
                 </div>
             </td>
         </tr>
