@@ -3,13 +3,14 @@ from django.urls import path
 from mailer.apps import MailerConfig
 from django.views.decorators.cache import cache_page
 
-from mailer.views import LetterListView, LetterDetailView, LetterCreateView, LetterDeleteView, LetterUpdateView
+from mailer.views import LetterListView, LetterDetailView, LetterCreateView, LetterDeleteView, LetterUpdateView, \
+    RecipientListView
 
 app_name = MailerConfig.name
 
 urlpatterns = [
     path('letters/<int:pk>/', cache_page(60)(LetterListView.as_view()), name='letter_list'),
-    # path('contacts/', ContactsView.as_view(), name='contacts'),
+    path('recipients/<int:pk>/', RecipientListView.as_view(), name='recipient_list'),
     path('letters/detail/<int:pk>/', LetterDetailView.as_view(), name='letter_detail'),
     path('letters/create/', LetterCreateView.as_view(), name='letter_create'),
     path('letters/update/<int:pk>/', LetterUpdateView.as_view(), name='letter_update'),

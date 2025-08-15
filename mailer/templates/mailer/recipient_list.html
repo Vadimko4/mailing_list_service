@@ -14,13 +14,13 @@
 </style>
 <div class="row">
     <div class="col-3 mt-4">
-        <img src="/media/img/letters.jpg" alt="письма" height="150">
+        <img src="/media/img/recipients.jpg" alt="получатели" height="150">
     </div>
     <div class="col-6 mt-4 container_c">
-        <h4 class="display-7 ">ВАШИ СООБЩЕНИЯ</h4>
+        <h4 class="display-7 ">ВАШИ ПОЛУЧАТЕЛИ</h4>
     </div>
     <div class="col-3 mt-4 container_r">
-        <a class="btn btn-outline-primary" href="{% url 'mailer:letter_create' %}" role="button">Создать сообщение</a>
+        <a class="btn btn-outline-primary" href="{% url 'mailer:recipient_create' %}" role="button">Добавить получателя</a>
     </div>
 </div>
 <div class="table-responsive small">
@@ -28,22 +28,22 @@
         <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">ТЕМА</th>
-            <th scope="col">ПРЕВЬЮ</th>
+            <th scope="col">ПОЧТА</th>
+            <th scope="col">Ф.И.О.</th>
             <th scope="col">&nbsp; ДЕЙСТВИЯ</th>
         </tr>
         </thead>
         <tbody>
-        {% for letter in object_list %}
+        {% for recipient in object_list %}
         <tr>
-            <td>{{ letter.id }}</td>
-            <td>{{ letter.subject | truncatechars:40 }}</td>
-            <td>{{ letter.content | truncatechars:60 }}</td>
+            <td>{{ recipient.id }}</td>
+            <td>{{ recipient.email | truncatechars:40 }}</td>
+            <td>{{ recipient.fio | truncatechars:60 }}</td>
             <td>
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <a href="{% url 'mailer:letter_detail' letter.pk %}" class="btn btn-link btn-sm">Посмотреть</a>
-                    <a href="{% url 'mailer:letter_update' letter.pk %}" class="btn btn-link btn-sm">Изменить</a>
-                    <a href="{% url 'mailer:letter_delete' letter.pk %}" class="btn btn-link btn-sm">Удалить</a>
+                    <a href="{% url 'mailer:recipient_detail' recipient.pk %}" class="btn btn-link btn-sm">Посмотреть</a>
+                    <a href="{% url 'mailer:recipient_update' recipient.pk %}" class="btn btn-link btn-sm">Изменить</a>
+                    <a href="{% url 'mailer:recipient_delete' recipient.pk %}" class="btn btn-link btn-sm">Удалить</a>
                 </div>
             </td>
         </tr>
