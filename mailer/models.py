@@ -6,7 +6,7 @@ from users.models import User
 class Letter(models.Model):
     subject = models.CharField(max_length=150, verbose_name='Тема письма', help_text='Введите тему письма')
     content = models.TextField(verbose_name='Текст письма',
-                                   help_text='Введите текст письма',default='отсутствует')
+                               help_text='Введите текст письма', default='отсутствует')
     owner = models.ForeignKey(User, verbose_name="Владелец", help_text="Укажите владельца письма", blank=True,
                               null=True, on_delete=models.SET_NULL)
 
@@ -25,8 +25,8 @@ class Letter(models.Model):
 class Recipient(models.Model):
     email = models.EmailField(blank=False, null=False, verbose_name="Email", help_text='Введите email')
     fio = models.CharField(max_length=150, verbose_name="ФИО", blank=True, null=True,
-                             help_text="Введите ФИО")
-    comment = models.TextField(verbose_name='Комментарий', help_text='Введите комментарий',default='отсутствует')
+                           help_text="Введите ФИО")
+    comment = models.TextField(verbose_name='Комментарий', help_text='Введите комментарий', default='отсутствует')
     owner = models.ForeignKey(User, verbose_name="Владелец", help_text="Укажите владельца получателя", blank=True,
                               null=True, on_delete=models.SET_NULL)
 
@@ -37,3 +37,31 @@ class Recipient(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class Mailing(models.Model):
+    STATUS_CHOICES = [
+        ('created', 'Создана'),
+        ('started', 'Запущена'),
+        ('completed', 'Завершена'),
+    ]
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='created')
+    started_at = models.DateTimeField(blank=True, null=True, verbose_name='Дата и время первой отправки',
+                                      help_text='Укажите дату и время первой отправки')
+    finished_at = models.DateTimeField(blank=True, null=True, verbose_name='Дата и время первой отправки',
+                                       help_text='Укажите дату и время первой отправки')
+    letter = models.ForeignKey(Letter, verbose_name="Сообщение", help_text="Укажите сообщение для рассылки",
+                               blank=False, null=False, on_delete=models.CASCADE)
+    recipients = models.ManyToManyField(Recipient, related_name='mailings', verbose_name="Получатели",
+                                        help_text="Укажите получателей рассылки")
+    owner = models.ForeignKey(User, verbose_name="Владелец", help_text="Укажите владельца рассылки", blank=False,
+                              null=False, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылки'
+        ordering = ['status','owner', 'started_at', 'finished_at']
+
+    def __str__(self):
+        return f"mailing id: {self.id}; letter subject: {self.letter.subject}; mailing status: {self.status}"
