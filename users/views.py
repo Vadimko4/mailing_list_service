@@ -7,6 +7,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView
 
 from config.settings import EMAIL_HOST_USER
+from mailer.models import Letter
 from users.forms import UserRegisterForm
 from users.models import User
 
@@ -42,3 +43,14 @@ def email_verification(request, token):
 
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        letters_count = Letter.objects.filter(owner=user).count()
+        # subscribers_count = Subscriber.objects.filter(owner=user).count()
+        context.update({
+            'letters_count': letters_count,
+            # 'subscribers_count': subscribers_count,
+        })
+        return context
