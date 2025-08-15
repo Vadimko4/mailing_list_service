@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 
-from mailer.forms import LetterForm, RecipientForm
-from mailer.models import Letter, Recipient
+from mailer.forms import LetterForm, RecipientForm, MailingForm
+from mailer.models import Letter, Recipient, Mailing
 from mailer.services import get_owner_letters_from_cache
 
 
@@ -89,3 +89,45 @@ class RecipientDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('mailer:recipient_list', kwargs={'pk': self.request.user.pk})
+
+
+class MailingListView(LoginRequiredMixin, ListView):
+    model = Mailing
+    paginate_by = 5  # Количество объектов - рассылок на странице
+
+    def get_queryset(self):
+        owner_id = self.request.user.id  # Получение id текущего пользователя
+        queryset = super().get_queryset()
+        return queryset.filter(owner=owner_id)
+
+
+class MailingDetailView(LoginRequiredMixin, DetailView):
+    model = Mailing
+
+
+class MailingCreateView(LoginRequiredMixin, CreateView):
+    model = Mailing
+    form_class = MailingForm
+
+    def get_success_url(self):
+        return reverse_lazy('mailer:mailing_list', kwargs={'pk': self.request.user.pk})
+
+    # Чтобы автоматически установить текущего пользователя как владельца
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+class MailingUpdateView(LoginRequiredMixin, UpdateView):
+    model = Mailing
+    form_class = MailingForm
+
+    def get_success_url(self):
+        return reverse_lazy('mailer:mailing_list', kwargs={'pk': self.request.user.pk})
+
+
+class MailingDeleteView(LoginRequiredMixin, DeleteView):
+    model = Mailing
+
+    def get_success_url(self):
+        return reverse_lazy('mailer:mailing_list', kwargs={'pk': self.request.user.pk})
