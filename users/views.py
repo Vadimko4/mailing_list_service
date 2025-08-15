@@ -7,7 +7,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView
 
 from config.settings import EMAIL_HOST_USER
-from mailer.models import Letter
+from mailer.models import Letter, Recipient
 from users.forms import UserRegisterForm
 from users.models import User
 
@@ -48,9 +48,9 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         letters_count = Letter.objects.filter(owner=user).count()
-        # subscribers_count = Subscriber.objects.filter(owner=user).count()
+        recipients_count = Recipient.objects.filter(owner=user).count()
         context.update({
             'letters_count': letters_count,
-            # 'subscribers_count': subscribers_count,
+            'recipients_count': recipients_count,
         })
         return context

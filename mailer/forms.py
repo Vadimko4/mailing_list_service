@@ -1,6 +1,6 @@
 from django.forms import BooleanField, ModelForm
 
-from mailer.models import Letter
+from mailer.models import Letter, Recipient
 
 
 class StyleFormMixin:
@@ -17,3 +17,9 @@ class LetterForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Letter
         exclude = ('created_at', 'updated_at', 'owner',)
+
+
+class RecipientForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Recipient
+        exclude = ('owner',)
