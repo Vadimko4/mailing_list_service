@@ -24,7 +24,8 @@
                     <img src="/media/img/recipients.jpg" alt="подписчики" height="150">
                 </a>
             </div>
-            <h9 class="my-0 font-weight-normal text-center mb-4">Количество адресатов в базе: {{ recipients_count }}</h9>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Количество адресатов в базе: {{ recipients_count }}
+            </h9>
         </div>
     </div>
     <div class="col-3 mt-4">
@@ -33,7 +34,9 @@
                 <h4 class="my-0 font-weight-normal text-center">ВСЕГО РАССЫЛОК</h4>
             </div>
             <div class="card-body" align="center">
-                <img src="/media/img/total_mailing.jpg" alt="всего рассылок" height="150">
+                <a href="{% url 'mailer:mailing_list' user.pk %}">
+                    <img src="/media/img/total_mailing.jpg" alt="всего рассылок" height="150">
+                </a>
             </div>
             <h9 class="my-0 font-weight-normal text-center mb-4">Всего рассылок в базе: 5</h9>
         </div>

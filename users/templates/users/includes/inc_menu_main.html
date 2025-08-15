@@ -36,7 +36,8 @@
                     </svg>
                     Получатели
                 </a></li>
-                <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" href="#">
+                <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2"
+                                        href="{% url 'mailer:mailing_list' user.pk %}">
                     <svg class="bi" aria-hidden="true">
                         <use xlink:href="#cart"></use>
                     </svg>
