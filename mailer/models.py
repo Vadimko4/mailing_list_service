@@ -58,6 +58,9 @@ class Mailing(models.Model):
     owner = models.ForeignKey(User, verbose_name="Владелец", help_text="Укажите владельца рассылки", blank=False,
                               null=False, on_delete=models.CASCADE)
 
+    def get_status_display(self):
+        return dict(self.STATUS_CHOICES)[self.status]
+
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'

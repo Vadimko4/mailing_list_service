@@ -20,7 +20,9 @@
                     <li>{{ object.letter.subject }}</li>
                     <li> &nbsp;</li>
                     <li>Получатели:</li>
-                    <li>{{ object.recipients }}</li>
+                    {% for recipient in object.recipients.all %}
+                    <li>{{ recipient.fio }}</li>
+                    {% endfor %}
                 </ul>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <a class="btn btn-outline-primary" href="{% url 'mailer:mailing_list' user.pk %}" role="button">Отмена</a>
