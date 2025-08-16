@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 
@@ -112,6 +112,13 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     form_class = MailingForm
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # Фильтруем письма и получателей по текущему пользователю
+        form.fields['letter'].queryset = Letter.objects.filter(owner=self.request.user)
+        form.fields['recipients'].queryset = Recipient.objects.filter(owner=self.request.user)
+        return form
+
     def get_success_url(self):
         return reverse_lazy('mailer:mailing_list', kwargs={'pk': self.request.user.pk})
 
@@ -124,6 +131,13 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
     form_class = MailingForm
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # Фильтруем письма и получателей по текущему пользователю
+        form.fields['letter'].queryset = Letter.objects.filter(owner=self.request.user)
+        form.fields['recipients'].queryset = Recipient.objects.filter(owner=self.request.user)
+        return form
 
     def get_success_url(self):
         return reverse_lazy('mailer:mailing_list', kwargs={'pk': self.request.user.pk})
@@ -138,18 +152,26 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
 
 class SendMailView(View):
     def post(self, request, *args, **kwargs):
+        mailing_id = kwargs.get('pk')  # Получение id из URL
+        mailing = get_object_or_404(Mailing, id=mailing_id)
+
+        letter_subject = mailing.letter.subject
+        letter_content = mailing.letter.content
+        recipients_list = mailing.recipients.all()
         try:
-            # Ваша логика отправки писем
-            letter_id = kwargs.get('letter_id')  # или как-то иначе получи идентификатор
-            letter = get_object_or_404(Letter, id=letter_id)
             send_mail(
-                subject='Подтверждение почты',
-                message=f'Здравствуйте, перейдите по ссылке для подтверждения Вашей почты: ',
+                subject=letter_subject,
+                message=letter_content,
                 from_email=EMAIL_HOST_USER,
-                recipient_list=[]
+                recipient_list=recipients_list
             )
-            # Сообщение об успешной отправке или перенаправление
-            return redirect('success_page')
+            # Сообщение об успешной отправке
+            print('good')
+            mailing.status = 'started'
+            mailing.save()
+
+            return redirect(reverse('mailer:mailing_list', kwargs={'pk': request.user.pk}))
         except Exception as e:
-            # Обработка ошибок и сообщение об ошибке
-            return render(request, 'error_page.html', {'error': str(e)})
+            # Сообщение об ошибке
+            print('error', str(e))
+            return render(request, 'mailer/mailing_list.html', {'error': str(e)})
