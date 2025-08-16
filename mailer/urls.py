@@ -5,7 +5,7 @@ from django.views.decorators.cache import cache_page
 
 from mailer.views import LetterListView, LetterDetailView, LetterCreateView, LetterDeleteView, LetterUpdateView, \
     RecipientListView, RecipientDetailView, RecipientCreateView, RecipientDeleteView, RecipientUpdateView, \
-    MailingListView, MailingDetailView, MailingCreateView, MailingDeleteView, MailingUpdateView
+    MailingListView, MailingDetailView, MailingCreateView, MailingDeleteView, MailingUpdateView, SendMailView
 
 app_name = MailerConfig.name
 
@@ -25,4 +25,5 @@ urlpatterns = [
     path('mailings/create/', MailingCreateView.as_view(), name='mailing_create'),
     path('mailing/update/<int:pk>/', MailingUpdateView.as_view(), name='mailing_update'),
     path('mailing/delete/<int:pk>/', MailingDeleteView.as_view(), name='mailing_delete'),
+    path('send_mail/<int:pk>/', SendMailView.as_view(), name='send_mail'),
 ]

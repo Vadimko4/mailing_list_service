@@ -47,10 +47,18 @@
                     <a href="{% url 'mailer:mailing_detail' mailing.pk %}" class="btn btn-link btn-sm">Посмотреть</a>
                     <a href="{% url 'mailer:mailing_update' mailing.pk %}" class="btn btn-link btn-sm">Изменить</a>
                     <a href="{% url 'mailer:mailing_delete' mailing.pk %}" class="btn btn-link btn-sm">Удалить</a>
-<!--                    сюда добавить кнопку ЗАПУСТИТЬ-->
                 </div>
             </td>
-            <td>{{ mailing.get_status_display }}</td>
+            {% if mailing.status == 'created' or mailing.status == 'started' %}
+            <td>
+                <form action="{% url 'mailer:send_mail' mailing.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success">ЗАПУСК</button>
+                    </form>
+            </td>
+            {% else %}
+            <button type="button" class="btn btn-outline-secondary" disabled>ЗАПУСК</button>
+            {% endif %}
         </tr>
         {% endfor %}
         </tbody>

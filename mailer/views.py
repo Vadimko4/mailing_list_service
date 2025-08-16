@@ -1,8 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 
+from config.settings import EMAIL_HOST_USER
 from mailer.forms import LetterForm, RecipientForm, MailingForm
 from mailer.models import Letter, Recipient, Mailing
 from mailer.services import get_owner_letters_from_cache
@@ -131,3 +134,22 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('mailer:mailing_list', kwargs={'pk': self.request.user.pk})
+
+
+class SendMailView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            # Ваша логика отправки писем
+            letter_id = kwargs.get('letter_id')  # или как-то иначе получи идентификатор
+            letter = get_object_or_404(Letter, id=letter_id)
+            send_mail(
+                subject='Подтверждение почты',
+                message=f'Здравствуйте, перейдите по ссылке для подтверждения Вашей почты: ',
+                from_email=EMAIL_HOST_USER,
+                recipient_list=[]
+            )
+            # Сообщение об успешной отправке или перенаправление
+            return redirect('success_page')
+        except Exception as e:
+            # Обработка ошибок и сообщение об ошибке
+            return render(request, 'error_page.html', {'error': str(e)})

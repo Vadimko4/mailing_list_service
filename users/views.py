@@ -7,15 +7,16 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView
 
 from config.settings import EMAIL_HOST_USER
-from mailer.models import Letter, Recipient
+from mailer.models import Letter, Recipient, Mailing
 from users.forms import UserRegisterForm
 from users.models import User
+from django.db.models import Q
 
 
 class UserCreateView(CreateView):
     model = User
     form_class = UserRegisterForm
-    success_url =  reverse_lazy('users:login')
+    success_url = reverse_lazy('users:login')
 
     def form_valid(self, form):
         user = form.save()
@@ -49,8 +50,17 @@ class IndexView(LoginRequiredMixin, TemplateView):
         user = self.request.user
         letters_count = Letter.objects.filter(owner=user).count()
         recipients_count = Recipient.objects.filter(owner=user).count()
+        mailings_count = Mailing.objects.filter(owner=user).count()
+        active_mailings_count = Mailing.objects.filter(owner=user).filter(
+            Q(status='created') | Q(status='started')).count()
+        # То же самое через Q
+        # active_mailings_count = Mailing.objects.filter(
+        #     Q(owner=user) & (Q(status='created') | Q(status='started'))
+        # ).count()
         context.update({
             'letters_count': letters_count,
             'recipients_count': recipients_count,
+            'mailings_count': mailings_count,
+            'active_mailings_count': active_mailings_count,
         })
         return context

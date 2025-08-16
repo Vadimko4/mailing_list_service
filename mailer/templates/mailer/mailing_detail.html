@@ -21,7 +21,7 @@
                     <li> &nbsp;</li>
                     <li>Получатели:</li>
                     {% for recipient in object.recipients.all %}
-                    <li>{{ recipient.fio }}</li>
+                    <li>{{ recipient.email }}</li>
                     {% endfor %}
                 </ul>
                 <div class="btn-group" role="group" aria-label="Basic example">

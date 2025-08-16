@@ -38,7 +38,7 @@
                     <img src="/media/img/total_mailing.jpg" alt="всего рассылок" height="150">
                 </a>
             </div>
-            <h9 class="my-0 font-weight-normal text-center mb-4">Всего рассылок в базе: 5</h9>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Всего рассылок в базе: {{ mailings_count }}</h9>
         </div>
     </div>
     <div class="col-3 mt-4">
@@ -49,7 +49,7 @@
             <div class="card-body" align="center">
                 <img src="/media/img/active_mailing.jpg" alt="запущенные рассылки" height="150">
             </div>
-            <h9 class="my-0 font-weight-normal text-center mb-4">Активных рассылок сейчас: 2</h9>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Активных рассылок сейчас: {{ active_mailings_count }}</h9>
         </div>
     </div>
 </div>
