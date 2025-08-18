@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
@@ -167,11 +169,15 @@ class SendMailView(View):
             )
             # Сообщение об успешной отправке
             print('good')
+            if mailing.status == 'created':
+                print('!!!')
+            #     mailing.started_at = datetime.now()
             mailing.status = 'started'
+            # mailing.finished_at = datetime.now()
             mailing.save()
 
-            return redirect(reverse('mailer:mailing_list', kwargs={'pk': request.user.pk}))
+            return redirect(reverse_lazy('mailer:mailing_list', kwargs={'pk': request.user.pk}))
         except Exception as e:
             # Сообщение об ошибке
-            print('error', str(e))
+            # print('error', str(e))
             return render(request, 'mailer/mailing_list.html', {'error': str(e)})

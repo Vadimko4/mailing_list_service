@@ -23,6 +23,13 @@
                     {% for recipient in object.recipients.all %}
                     <li>{{ recipient.email }}</li>
                     {% endfor %}
+                    <li> &nbsp;</li>
+                    <li>Статус: {{ object.get_status_display }}</li>
+                    {% if object.status == 'started' %}
+                        <li> &nbsp;</li>
+                        <li>Дата первой отправки: {{ object.started_at }}</li>
+                        <li>Дата окончания отправки: {{ object.finished_at }}</li>
+                    {% endif %}
                 </ul>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <a class="btn btn-outline-primary" href="{% url 'mailer:mailing_list' user.pk %}" role="button">Отмена</a>
