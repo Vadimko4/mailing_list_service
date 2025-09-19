@@ -52,7 +52,8 @@ class IndexView(LoginRequiredMixin, TemplateView):
         recipients_count = Recipient.objects.filter(owner=user).count()
         mailings_count = Mailing.objects.filter(owner=user).count()
         active_mailings_count = Mailing.objects.filter(owner=user).filter(
-            Q(status='created') | Q(status='started')).count()
+            # Q(status='created') | создана, но не запущена - не считаем её активной
+            Q(status='started')).count() #запущена - активная
         # То же самое через Q
         # active_mailings_count = Mailing.objects.filter(
         #     Q(owner=user) & (Q(status='created') | Q(status='started'))
