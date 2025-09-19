@@ -19,7 +19,7 @@ class LetterListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         owner_id = self.request.user.id  # Получение id текущего пользователя
-        return get_owner_letters_from_cache(owner_id)
+        return get_owner_letters_from_cache(owner_id).order_by('id')
 
 
 class LetterDetailView(LoginRequiredMixin, DetailView):
@@ -103,7 +103,7 @@ class MailingListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         owner_id = self.request.user.id  # Получение id текущего пользователя
         queryset = super().get_queryset()
-        return queryset.filter(owner=owner_id)
+        return queryset.filter(owner=owner_id).order_by('id')
 
 
 class MailingDetailView(LoginRequiredMixin, DetailView):
@@ -167,13 +167,10 @@ class SendMailView(View):
                 from_email=EMAIL_HOST_USER,
                 recipient_list=recipients_list
             )
-            # Сообщение об успешной отправке
-            print('good')
             if mailing.status == 'created':
-                print('!!!')
-            #     mailing.started_at = datetime.now()
+                mailing.started_at = datetime.datetime.now()
             mailing.status = 'started'
-            # mailing.finished_at = datetime.now()
+            mailing.finished_at = datetime.datetime.now()
             mailing.save()
 
             return redirect(reverse_lazy('mailer:mailing_list', kwargs={'pk': request.user.pk}))

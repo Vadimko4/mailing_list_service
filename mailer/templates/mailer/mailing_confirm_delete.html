@@ -12,7 +12,7 @@
     <div class="row">
         <form class="row" method="post" enctype="multipart/form-data">
             <div class="card">
-                <p class="card-text">Действительно хотите удалить рассылку: "{{ object.__str__ }}"</p>
+                <p class="card-text">Действительно хотите удалить рассылку: "{{object}}"</p>
                 <div class="card-body">
                     {% csrf_token %}
                 </div>
