@@ -76,7 +76,7 @@ class Attempt(models.Model):
         ('unsuccessfully', 'Не успешно'),
     ]
 
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=40, choices=STATUS_CHOICES)
     date_time = models.DateTimeField(blank=True, null=True, verbose_name='Дата и время попытки',
                                       help_text='Укажите дату и время попытки')
     mail_server_response = models.TextField(verbose_name='Ответ почтового сервера')
