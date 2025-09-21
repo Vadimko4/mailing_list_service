@@ -1,13 +1,14 @@
 import secrets
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages import success
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView
 
 from config.settings import EMAIL_HOST_USER
-from mailer.models import Letter, Recipient, Mailing
+from mailer.models import Letter, Recipient, Mailing, Attempt
 from users.forms import UserRegisterForm
 from users.models import User
 from django.db.models import Q
@@ -58,10 +59,16 @@ class IndexView(LoginRequiredMixin, TemplateView):
         # active_mailings_count = Mailing.objects.filter(
         #     Q(owner=user) & (Q(status='created') | Q(status='started'))
         # ).count()
+        attempt_count = Attempt.objects.count()
+        successfull_attempt_count = Attempt.objects.filter(status='successfully').count()
+        effectiveness = int(successfull_attempt_count / attempt_count * 100)
         context.update({
             'letters_count': letters_count,
             'recipients_count': recipients_count,
             'mailings_count': mailings_count,
             'active_mailings_count': active_mailings_count,
+            'attempt_count': attempt_count,
+            'successfull_attempt_count': successfull_attempt_count,
+            'effectiveness': effectiveness
         })
         return context

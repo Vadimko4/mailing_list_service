@@ -9,7 +9,7 @@ from django.views.generic import ListView, CreateView, DeleteView, UpdateView, D
 
 from config.settings import EMAIL_HOST_USER
 from mailer.forms import LetterForm, RecipientForm, MailingForm
-from mailer.models import Letter, Recipient, Mailing
+from mailer.models import Letter, Recipient, Mailing, Attempt
 from mailer.services import get_owner_letters_from_cache
 
 
@@ -172,9 +172,23 @@ class SendMailView(View):
             mailing.status = 'started'
             mailing.finished_at = datetime.datetime.now()
             mailing.save()
+            # Создание экземпляра Attempt
+            Attempt.objects.create(
+                mailing=mailing,
+                status='successfully',
+                date_time=datetime.datetime.now(),
+                mail_server_response = ''
+            )
 
             return redirect(reverse_lazy('mailer:mailing_list', kwargs={'pk': request.user.pk}))
         except Exception as e:
             # Сообщение об ошибке
             # print('error', str(e))
+            # Создание экземпляра Attempt
+            Attempt.objects.create(
+                mailing=mailing,
+                status='unsuccessfully',
+                date_time=datetime.datetime.now(),
+                mail_server_response=f'{e}'
+            )
             return render(request, 'mailer/mailing_list.html', {'error': str(e)})

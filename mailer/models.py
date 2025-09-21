@@ -81,7 +81,7 @@ class Attempt(models.Model):
                                       help_text='Укажите дату и время попытки')
     mail_server_response = models.TextField(verbose_name='Ответ почтового сервера')
     mailing = models.ForeignKey(Mailing, verbose_name="Рассылка", help_text="Укажите рассылку",
-                               blank=False, null=False, on_delete=models.CASCADE)
+                               blank=False, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Попытка рассылки'

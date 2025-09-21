@@ -62,7 +62,7 @@
             <div class="card-body" align="center">
                 <img src="/media/img/mailing_attempts.jpg" alt="все попытки" height="150">
             </div>
-            <h9 class="my-0 font-weight-normal text-center mb-4">Всего попыток рассылок: 4</h9>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Всего попыток рассылок: {{ attempt_count }}</h9>
         </div>
     </div>
     <div class="col-3 mt-4">
@@ -73,7 +73,7 @@
             <div class="card-body" align="center">
                 <img src="/media/img/success_mailing_attempts.jpg" alt="успешные попытки" height="150">
             </div>
-            <h9 class="my-0 font-weight-normal text-center mb-4">Успешных попыток рассылок: 3</h9>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Успешных попыток рассылок: {{ successfull_attempt_count }}</h9>
         </div>
     </div>
     <div class="col-3 mt-4">
@@ -84,7 +84,7 @@
             <div class="card-body" align="center">
                 <img src="/media/img/statistics.jpg" alt="статистика" height="150">
             </div>
-            <h9 class="my-0 font-weight-normal text-center mb-4">Эффективность рассылки: 75%</h9>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Эффективность рассылки: {{ effectiveness }}%</h9>
         </div>
     </div>
 </div>
