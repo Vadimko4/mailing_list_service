@@ -1,24 +1,105 @@
 {% extends 'users/base.html' %}
+{% load static %}
+
 {% block content %}
 <style>
-    .container {
-    display: flex;
-    justify-content: center; /* Центрирование по горизонтали */
-    align-items: center;    /* Центрирование по вертикали */
-    height: 100vh;          /* Полная высота окна */
-}
+    .split-login-container {
+        min-height: 100vh;
+        display: flex;
+    }
+
+    .login-image-section {
+        flex: 1;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+
+    .login-form-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        background: #f8f9fc;
+    }
+
+    .login-form-container {
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .welcome-image {
+        max-width: 300px;
+        width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 2px solid #e3e6f0;
+    }
+
+    .btn-login {
+        background: #4e73df;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        color: white;
+        font-weight: 600;
+        width: 100%;
+    }
 </style>
-<div class="container">
-    <form class="row" method="post" enctype="multipart/form-data">
-        <div class="card">
-            <div class="card-body">
-                {% csrf_token %}
-                {{ form.as_p }}
+
+<div class="split-login-container">
+    <!-- Левая часть с изображением -->
+    <div class="login-image-section">
+        <img src="/media/img/login-illustration.png"
+             alt="Вход в систему"
+             class="welcome-image"
+             onerror="this.src='https://via.placeholder.com/300x300/667eea/ffffff?text=Welcome'">
+    </div>
+
+    <!-- Правая часть с формой -->
+    <div class="login-form-section">
+        <div class="login-form-container">
+            <div class="text-center mb-4">
+                <h2>Вход в систему</h2>
+                <p class="text-muted">Введите свои учетные данные</p>
             </div>
-            <button type="submit" class="btn btn-primary">
-                Войти
-            </button>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="id_username" class="form-label">Email пользователя</label>
+                    <input type="text"
+                           name="username"
+                           id="id_username"
+                           class="form-control"
+                           placeholder="Введите e-mail пользователя"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password" class="form-label">Пароль</label>
+                    <input type="password"
+                           name="password"
+                           id="id_password"
+                           class="form-control"
+                           placeholder="Введите пароль"
+                           required>
+                </div>
+
+                <button type="submit" class="btn btn-login">Войти</button>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

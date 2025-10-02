@@ -19,7 +19,7 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
         fields = ("email", "password1", "password2")
 
 
-class UserLoginForm(StyleFormMixin, AuthenticationForm):
-    class Meta:
-        model = User
-        fields = ("email", "password")
+# class UserLoginForm(StyleFormMixin, AuthenticationForm):
+#     class Meta:
+#         model = User
+#         fields = ("email", "password")
