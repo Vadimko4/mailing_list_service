@@ -1,6 +1,10 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
 from django.forms import ModelForm, BooleanField
 from users.models import User
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 class StyleFormMixin:
@@ -17,6 +21,13 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
         fields = ("email", "password1", "password2")
+
+
+# class EmailPasswordResetForm(PasswordResetForm):
+#     def get_users(self, email):
+#         """Найти пользователей по email"""
+#         active_users = User.objects.filter(email__iexact=email, is_active=True)
+#         return active_users
 
 
 # class UserLoginForm(StyleFormMixin, AuthenticationForm):
