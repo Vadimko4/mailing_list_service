@@ -1,12 +1,13 @@
 import secrets
-
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView as AuthLoginView
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages import success
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, TemplateView
-
+from django.views.generic import CreateView, TemplateView, ListView
+from django.contrib import messages
 from config.settings import EMAIL_HOST_USER
 from mailer.models import Letter, Recipient, Mailing, Attempt
 from users.forms import UserRegisterForm
@@ -72,3 +73,69 @@ class IndexView(LoginRequiredMixin, TemplateView):
             'effectiveness': effectiveness
         })
         return context
+
+
+class UserManagementView(PermissionRequiredMixin, ListView):
+    """View для отображения списка пользователей"""
+    model = User
+    template_name = 'users/user_management.html'
+    context_object_name = 'users'
+    permission_required = 'users.can_toggle_user_active'
+    login_url = '/users/login/'
+
+    def get_queryset(self):
+        # Исключаем текущего пользователя и суперпользователей из списка
+        return User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
+
+
+@permission_required('users.can_toggle_user_active', login_url='/users/login/')
+def toggle_user_active(request, user_id):
+    """View для блокировки/разблокировки пользователя"""
+    if request.method == 'POST':
+        try:
+            user = get_object_or_404(User, id=user_id)
+
+            # Не позволяем менять свой статус
+            if user.id == request.user.id:
+                messages.error(request, 'Вы не можете изменить свой статус')
+                return redirect('users:user_management')
+
+            # Не позволяем менять статус суперпользователей
+            if user.is_superuser:
+                messages.error(request, 'Вы не можете изменять статус суперпользователя')
+                return redirect('users:user_management')
+
+            # Меняем статус
+            user.is_active = not user.is_active
+            user.save()
+
+            action = "разблокирован" if user.is_active else "заблокирован"
+            messages.success(request, f'Пользователь {user.email} {action}')
+
+        except User.DoesNotExist:
+            messages.error(request, 'Пользователь не найден')
+
+    return redirect('users:user_management')
+
+
+@permission_required('users.can_toggle_user_active', login_url='/users/login/')
+def manager_dashboard(request):
+    """Dashboard для менеджера"""
+    active_users_count = User.objects.filter(is_active=True).exclude(is_superuser=True).count()
+    inactive_users_count = User.objects.filter(is_active=False).exclude(is_superuser=True).count()
+
+    return render(request, 'users/manager_dashboard.html', {
+        'active_users_count': active_users_count,
+        'inactive_users_count': inactive_users_count,
+    })
+
+
+class LoginView(AuthLoginView):
+    template_name = 'users/login.html'
+
+    def get_success_url(self):
+        # Проверяем, есть ли у пользователя право can_toggle_user_active
+        if self.request.user.has_perm('users.can_toggle_user_active'):
+            return reverse_lazy('users:manager_dashboard')
+        else:
+            return reverse_lazy('home')
