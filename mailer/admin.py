@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from mailer.models import Letter, Recipient, Mailing
+from mailer.models import Letter, Mailing, Recipient
 
 
 @admin.register(Letter)  # Регистрируем модель
@@ -12,7 +12,7 @@ class LetterAdmin(admin.ModelAdmin):
 @admin.register(Recipient)  # Регистрируем модель
 class RecipientAdmin(admin.ModelAdmin):
     # Настраиваем поля, которые будем выводить в админке
-    list_display = ('id', 'email', 'fio','comment')
+    list_display = ('id', 'email', 'fio', 'comment')
     # По чему будем делать фильтрацию
     list_filter = ('email', 'fio', 'owner')
     # По чему у нас будет поиск

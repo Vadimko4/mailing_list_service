@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='attempt',
             name='mailing',
-            field=models.ForeignKey(help_text='Укажите рассылку', null=True, on_delete=django.db.models.deletion.SET_NULL, to='mailer.mailing', verbose_name='Рассылка'),
+            field=models.ForeignKey(help_text='Укажите рассылку', null=True,
+                                    on_delete=django.db.models.deletion.SET_NULL, to='mailer.mailing',
+                                    verbose_name='Рассылка'),
         ),
     ]

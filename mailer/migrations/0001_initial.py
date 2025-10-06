@@ -18,9 +18,13 @@ class Migration(migrations.Migration):
             name='Letter',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('subject', models.CharField(help_text='Введите тему письма', max_length=150, verbose_name='Тема письма')),
-                ('content', models.TextField(default='отсутствует', help_text='Введите текст письма', verbose_name='Текст письма')),
-                ('owner', models.ForeignKey(blank=True, help_text='Укажите владельца письма', null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='Владелец')),
+                ('subject', models.CharField(help_text='Введите тему письма', max_length=150,
+                                             verbose_name='Тема письма')),
+                ('content', models.TextField(default='отсутствует', help_text='Введите текст письма',
+                                             verbose_name='Текст письма')),
+                ('owner', models.ForeignKey(blank=True, help_text='Укажите владельца письма', null=True,
+                                            on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL,
+                                            verbose_name='Владелец')),
             ],
             options={
                 'verbose_name': 'Письмо',

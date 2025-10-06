@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='mailing',
             name='finished_at',
-            field=models.DateTimeField(blank=True, help_text='Укажите дату и время последней отправки', null=True, verbose_name='Дата и время завершения отправки'),
+            field=models.DateTimeField(blank=True, help_text='Укажите дату и время последней отправки',
+                                       null=True, verbose_name='Дата и время завершения отправки'),
         ),
     ]

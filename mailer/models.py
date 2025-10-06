@@ -64,7 +64,7 @@ class Mailing(models.Model):
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
-        ordering = ['status','owner', 'started_at', 'finished_at']
+        ordering = ['status', 'owner', 'started_at', 'finished_at']
 
     def __str__(self):
         return f"mailing id: {self.id}; letter subject: {self.letter.subject}; mailing status: {self.status}"
@@ -77,11 +77,17 @@ class Attempt(models.Model):
     ]
 
     status = models.CharField(max_length=40, choices=STATUS_CHOICES)
-    date_time = models.DateTimeField(blank=True, null=True, verbose_name='Дата и время попытки',
-                                      help_text='Укажите дату и время попытки')
+    date_time = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name='Дата и время попытки',
+        help_text='Укажите дату и время попытки')
     mail_server_response = models.TextField(verbose_name='Ответ почтового сервера')
-    mailing = models.ForeignKey(Mailing, verbose_name="Рассылка", help_text="Укажите рассылку",
-                               blank=False, null=True, on_delete=models.SET_NULL)
+    mailing = models.ForeignKey(
+        Mailing, verbose_name="Рассылка",
+        help_text="Укажите рассылку",
+        blank=False, null=True,
+        on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Попытка рассылки'

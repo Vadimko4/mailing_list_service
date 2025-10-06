@@ -1,9 +1,11 @@
-from django.core.management.base import BaseCommand
-from django.core.mail import send_mail
-from django.conf import settings
 from datetime import datetime
-from mailer.models import Mailing, Attempt
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.core.management.base import BaseCommand
+
+from mailer.models import Attempt, Mailing
 
 User = get_user_model()
 

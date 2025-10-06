@@ -1,20 +1,21 @@
 import secrets
-from django.contrib.auth.views import LoginView as AuthLoginView
-from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.messages import success
-from django.core.mail import send_mail
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, TemplateView, ListView
+
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
+from django.contrib.auth.views import LoginView as AuthLoginView
+from django.core.mail import send_mail
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
+from django.utils import timezone
+from django.views.generic import CreateView, ListView, TemplateView
+
 from config.settings import EMAIL_HOST_USER
-from mailer.models import Letter, Recipient, Mailing, Attempt
+from mailer.models import Attempt, Letter, Mailing, Recipient
 from users.forms import UserRegisterForm
 from users.models import User
-from django.db.models import Q
-from django.core.paginator import Paginator
-from django.utils import timezone
 
 
 class UserCreateView(CreateView):
@@ -57,7 +58,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
         mailings_count = Mailing.objects.filter(owner=user).count()
         active_mailings_count = Mailing.objects.filter(owner=user).filter(
             # Q(status='created') | создана, но не запущена - не считаем её активной
-            Q(status='started')).count() #запущена - активная
+            Q(status='started')).count()  # запущена - активная
         # То же самое через Q
         # active_mailings_count = Mailing.objects.filter(
         #     Q(owner=user) & (Q(status='created') | Q(status='started'))
@@ -129,8 +130,8 @@ def toggle_user_active(request, user_id):
 @permission_required('users.can_toggle_user_active', login_url='/users/login/')
 def manager_dashboard(request):
     """Dashboard для менеджера"""
-    from users.models import User
     from mailer.models import Mailing, Recipient
+    from users.models import User
 
     active_users_count = User.objects.filter(is_active=True).exclude(is_superuser=True).count()
     inactive_users_count = User.objects.filter(is_active=False).exclude(is_superuser=True).count()

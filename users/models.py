@@ -8,12 +8,14 @@ class User(AbstractUser):
                                help_text="Загрузите свой аватар")
     phone = models.CharField(max_length=15, verbose_name="Телефон", blank=True, null=True,
                              help_text="Введите номер телефона")
-    country = models.CharField(max_length=50, verbose_name="Страна", blank=True, null=True,
-                             help_text="Введите страну")
+    country = models.CharField(max_length=50,
+                               verbose_name="Страна",
+                               blank=True, null=True,
+                               help_text="Введите страну")
 
     token = models.CharField(max_length=100, verbose_name="Token", blank=True, null=True)
 
-    USERNAME_FIELD = "email" # меняем юзернейм на почту
+    USERNAME_FIELD = "email"  # меняем юзернейм на почту
     REQUIRED_FIELDS = ['username',]
 
     class Meta:

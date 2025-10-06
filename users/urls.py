@@ -1,8 +1,12 @@
-from django.urls import path
 from django.contrib.auth import views as auth_views
-from users.views import (UserCreateView, email_verification, UserManagementView, toggle_user_active, manager_dashboard,
-                         LoginView, RecipientManagementView, MailingManagementView, complete_mailing)
+from django.urls import path
+
 from users.apps import UsersConfig
+from users.views import (LoginView, MailingManagementView,
+                         RecipientManagementView, UserCreateView,
+                         UserManagementView, complete_mailing,
+                         email_verification, manager_dashboard,
+                         toggle_user_active)
 
 app_name = UsersConfig.name
 

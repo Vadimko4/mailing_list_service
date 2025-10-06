@@ -15,10 +15,14 @@ class Migration(migrations.Migration):
             name='Attempt',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(choices=[('successfully', 'Успешно'), ('unsuccessfully', 'Не успешно')], max_length=40)),
-                ('date_time', models.DateTimeField(blank=True, help_text='Укажите дату и время попытки', null=True, verbose_name='Дата и время попытки')),
+                ('status', models.CharField(choices=[('successfully', 'Успешно'), ('unsuccessfully', 'Не успешно')],
+                                            max_length=40)),
+                ('date_time', models.DateTimeField(blank=True, help_text='Укажите дату и время попытки', null=True,
+                                                   verbose_name='Дата и время попытки')),
                 ('mail_server_response', models.TextField(verbose_name='Ответ почтового сервера')),
-                ('mailing', models.ForeignKey(help_text='Укажите рассылку', on_delete=django.db.models.deletion.CASCADE, to='mailer.mailing', verbose_name='Рассылка')),
+                ('mailing', models.ForeignKey(help_text='Укажите рассылку',
+                                              on_delete=django.db.models.deletion.CASCADE, to='mailer.mailing',
+                                              verbose_name='Рассылка')),
             ],
             options={
                 'verbose_name': 'Попытка рассылки',

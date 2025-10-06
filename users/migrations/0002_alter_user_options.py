@@ -12,6 +12,8 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='user',
-            options={'permissions': [('can_toggle_user_active', 'Может блокировать/разблокировать пользователя')], 'verbose_name': 'Пользователь', 'verbose_name_plural': 'Пользователи'},
+            options={'permissions': [('can_toggle_user_active',
+                                      'Может блокировать/разблокировать пользователя')],
+                     'verbose_name': 'Пользователь', 'verbose_name_plural': 'Пользователи'},
         ),
     ]

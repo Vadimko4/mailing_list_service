@@ -1,8 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
-from django.forms import ModelForm, BooleanField
-from users.models import User
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.forms import UserCreationForm
+from django.forms import BooleanField
 
 User = get_user_model()
 

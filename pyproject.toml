@@ -17,6 +17,7 @@ redis = "^6.4.0"
 
 [tool.poetry.group.lint.dependencies]
 flake8 = "^7.3.0"
+isort = "^6.1.0"
 
 [build-system]
 requires = ["poetry-core"]

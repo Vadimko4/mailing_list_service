@@ -3,7 +3,6 @@ from django.core.cache import cache
 from config.settings import CACHE_ENABLE
 from mailer.models import Letter
 
-
 # def get_owner_letters_from_cache(owner_id):
 #     if not CACHE_ENABLE:
 #         return Letter.objects.all().filter(owner_id=owner_id)

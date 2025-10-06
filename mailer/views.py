@@ -2,14 +2,15 @@ import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy, reverse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 
 from config.settings import EMAIL_HOST_USER
-from mailer.forms import LetterForm, RecipientForm, MailingForm
-from mailer.models import Letter, Recipient, Mailing, Attempt
+from mailer.forms import LetterForm, MailingForm, RecipientForm
+from mailer.models import Attempt, Letter, Mailing, Recipient
 from mailer.services import get_owner_letters_from_cache
 
 
@@ -177,8 +178,7 @@ class SendMailView(View):
                 mailing=mailing,
                 status='successfully',
                 date_time=datetime.datetime.now(),
-                mail_server_response = ''
-            )
+                mail_server_response='')
 
             return redirect(reverse_lazy('mailer:mailing_list', kwargs={'pk': request.user.pk}))
         except Exception as e:
