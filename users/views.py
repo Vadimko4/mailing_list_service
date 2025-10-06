@@ -13,6 +13,8 @@ from mailer.models import Letter, Recipient, Mailing, Attempt
 from users.forms import UserRegisterForm
 from users.models import User
 from django.db.models import Q
+from django.core.paginator import Paginator
+from django.utils import timezone
 
 
 class UserCreateView(CreateView):
@@ -84,8 +86,14 @@ class UserManagementView(PermissionRequiredMixin, ListView):
     login_url = '/users/login/'
 
     def get_queryset(self):
-        # Исключаем текущего пользователя и суперпользователей из списка
-        return User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
+        # Получаем всех пользователей, которые НЕ в группе managers
+        return User.objects.filter(
+            is_superuser=False
+        ).exclude(
+            id=self.request.user.id
+        ).exclude(
+            groups__name='managers'
+        ).distinct()
 
 
 @permission_required('users.can_toggle_user_active', login_url='/users/login/')
@@ -121,12 +129,27 @@ def toggle_user_active(request, user_id):
 @permission_required('users.can_toggle_user_active', login_url='/users/login/')
 def manager_dashboard(request):
     """Dashboard для менеджера"""
+    from users.models import User
+    from mailer.models import Mailing, Recipient
+
     active_users_count = User.objects.filter(is_active=True).exclude(is_superuser=True).count()
     inactive_users_count = User.objects.filter(is_active=False).exclude(is_superuser=True).count()
+
+    # Статистика по рассылкам
+    total_mailings = Mailing.objects.count()
+    active_mailings = Mailing.objects.filter(status='started').count()
+    completed_mailings = Mailing.objects.filter(status='completed').count()
+
+    # Статистика по получателям
+    total_recipients = Recipient.objects.count()
 
     return render(request, 'users/manager_dashboard.html', {
         'active_users_count': active_users_count,
         'inactive_users_count': inactive_users_count,
+        'total_mailings': total_mailings,
+        'active_mailings': active_mailings,
+        'completed_mailings': completed_mailings,
+        'total_recipients': total_recipients,
     })
 
 
@@ -139,3 +162,53 @@ class LoginView(AuthLoginView):
             return reverse_lazy('users:manager_dashboard')
         else:
             return reverse_lazy('home')
+
+
+class RecipientManagementView(PermissionRequiredMixin, ListView):
+    """View для отображения списка получателей с пагинацией"""
+    model = Recipient
+    template_name = 'users/recipient_management.html'
+    context_object_name = 'recipients'
+    permission_required = 'users.can_toggle_user_active'
+    login_url = '/users/login/'
+    paginate_by = 10  # 10 получателей на странице
+    ordering = ['id']  # Сортировка по возрастанию ID
+
+    def get_queryset(self):
+        # Оптимизируем запрос, загружая связанного владельца
+        return Recipient.objects.select_related('owner').order_by('id')
+
+
+class MailingManagementView(PermissionRequiredMixin, ListView):
+    """View для отображения списка рассылок с пагинацией"""
+    model = Mailing
+    template_name = 'users/mailing_management.html'
+    context_object_name = 'mailings'
+    permission_required = 'users.can_toggle_user_active'
+    login_url = '/users/login/'
+    paginate_by = 10  # 10 рассылок на странице
+    ordering = ['id']  # Сортировка по возрастанию ID
+
+    def get_queryset(self):
+        # Оптимизируем запросы, загружая связанные объекты
+        return Mailing.objects.select_related('letter', 'owner').prefetch_related('recipients').order_by('id')
+
+
+@permission_required('users.can_toggle_user_active', login_url='/users/login/')
+def complete_mailing(request, mailing_id):
+    """View для принудительного завершения рассылки"""
+    if request.method == 'POST':
+        try:
+            mailing = get_object_or_404(Mailing, id=mailing_id)
+
+            # Меняем статус на "completed" и устанавливаем время завершения
+            mailing.status = 'completed'
+            mailing.finished_at = timezone.now()
+            mailing.save()
+
+            messages.success(request, f'Рассылка "{mailing.letter.subject}" завершена')
+
+        except Mailing.DoesNotExist:
+            messages.error(request, 'Рассылка не найдена')
+
+    return redirect('users:mailing_management')

@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from users.views import (UserCreateView, email_verification, UserManagementView, toggle_user_active, manager_dashboard,
-                         LoginView)
+                         LoginView, RecipientManagementView, MailingManagementView, complete_mailing)
 from users.apps import UsersConfig
 
 app_name = UsersConfig.name
@@ -16,4 +16,7 @@ urlpatterns = [
     path('user-management/', UserManagementView.as_view(), name='user_management'),
     path('user-management/toggle-active/<int:user_id>/', toggle_user_active, name='toggle_user_active'),
     path('manager-dashboard/', manager_dashboard, name='manager_dashboard'),
+    path('recipient-management/', RecipientManagementView.as_view(), name='recipient_management'),
+    path('mailing-management/', MailingManagementView.as_view(), name='mailing_management'),
+    path('mailing-management/complete/<int:mailing_id>/', complete_mailing, name='complete_mailing'),
 ]

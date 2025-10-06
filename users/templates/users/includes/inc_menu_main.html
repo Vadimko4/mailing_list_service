@@ -17,7 +17,7 @@
             <ul class="nav flex-column">
                 {% if perms.users.can_toggle_user_active %}
                 <li class="nav-item">
-                    <a class="nav-link" href=#>
+                    <a class="nav-link" href="{% url 'users:recipient_management' %}">
                         <svg class="bi" aria-hidden="true">
                             <use xlink:href="#people"></use>
                         </svg>
@@ -25,7 +25,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=#>
+                    <a class="nav-link" href="{% url 'users:mailing_management' %}">
                         <svg class="bi" aria-hidden="true">
                             <use xlink:href="#cart"></use>
                         </svg>
