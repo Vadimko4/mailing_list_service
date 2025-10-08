@@ -1,0 +1,79 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Панель менеджера</h4>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-user-shield fa-4x text-primary"></i>
+                    </div>
+                    <h5>Добро пожаловать в панель управления!</h5>
+                    <p class="text-muted">Здесь вы можете управлять статусом пользователей</p>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6>Активных пользователей</h6>
+                                    <h3 class="text-success">{{ active_users_count }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6>Заблокированных</h6>
+                                    <h3 class="text-danger">{{ inactive_users_count }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-3 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6>Всего рассылок</h6>
+                                    <h3 class="text-primary">{{ total_mailings }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6>Активных </h6>
+                                    <h3 class="text-warning">{{ active_mailings }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6>Завершенных</h6>
+                                    <h3 class="text-success">{{ completed_mailings }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6>Получателей</h6>
+                                    <h3 class="text-info">{{ total_recipients }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'users:user_management' %}" class="btn btn-primary btn-lg mt-3">
+                        <i class="fas fa-cog"></i> Управление пользователями
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

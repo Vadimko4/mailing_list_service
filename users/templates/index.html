@@ -1,0 +1,91 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-3 mt-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">ПИСЬМА</h4>
+            </div>
+            <div class="card-body" align="center">
+                <a href="{% url 'mailer:letter_list' user.pk %}">
+                    <img src="/media/img/letters.jpg" alt="письма" height="150">
+                </a>
+            </div>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Количество писем в базе: {{ letters_count }}</h9>
+        </div>
+    </div>
+    <div class="col-3 mt-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">ПОДПИСЧИКИ</h4>
+            </div>
+            <div class="card-body" align="center">
+                <a href="{% url 'mailer:recipient_list' user.pk %}">
+                    <img src="/media/img/recipients.jpg" alt="подписчики" height="150">
+                </a>
+            </div>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Количество адресатов в базе: {{ recipients_count }}
+            </h9>
+        </div>
+    </div>
+    <div class="col-3 mt-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">ВСЕГО РАССЫЛОК</h4>
+            </div>
+            <div class="card-body" align="center">
+                <a href="{% url 'mailer:mailing_list' user.pk %}">
+                    <img src="/media/img/total_mailing.jpg" alt="всего рассылок" height="150">
+                </a>
+            </div>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Всего рассылок в базе: {{ mailings_count }}</h9>
+        </div>
+    </div>
+    <div class="col-3 mt-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">ЗАПУЩЕНО</h4>
+            </div>
+            <div class="card-body" align="center">
+                <img src="/media/img/active_mailing.jpg" alt="запущенные рассылки" height="150">
+            </div>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Активных рассылок сейчас: {{ active_mailings_count }}</h9>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-3 mt-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">ВСЕГО ПОПЫТОК</h4>
+            </div>
+            <div class="card-body" align="center">
+                <img src="/media/img/mailing_attempts.jpg" alt="все попытки" height="150">
+            </div>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Всего попыток рассылок: {{ attempt_count }}</h9>
+        </div>
+    </div>
+    <div class="col-3 mt-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">УСПЕШНЫХ</h4>
+            </div>
+            <div class="card-body" align="center">
+                <img src="/media/img/success_mailing_attempts.jpg" alt="успешные попытки" height="150">
+            </div>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Успешных попыток рассылок: {{ successfull_attempt_count }}</h9>
+        </div>
+    </div>
+    <div class="col-3 mt-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">СТАТИСТИКА</h4>
+            </div>
+            <div class="card-body" align="center">
+                <img src="/media/img/statistics.jpg" alt="статистика" height="150">
+            </div>
+            <h9 class="my-0 font-weight-normal text-center mb-4">Эффективность рассылки: {{ effectiveness }}%</h9>
+        </div>
+    </div>
+</div>
+{% endblock %}

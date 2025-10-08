@@ -1,0 +1,88 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<style>
+    .container_c {
+    display: flex;
+    justify-content: center;
+    align-items: center;    /* Центрирование по вертикали */
+}
+    .container_r {
+    display: flex;
+    justify-content: right;
+    align-items: center;    /* Центрирование по вертикали */
+}
+</style>
+<div class="row">
+    <div class="col-3 mt-4">
+        <img src="/media/img/total_mailing.jpg" alt="всего рассылок" height="150">
+    </div>
+    <div class="col-6 mt-4 container_c">
+        <h4 class="display-7 ">ВАШИ РАССЫЛКИ</h4>
+    </div>
+    <div class="col-3 mt-4 container_r">
+        <a class="btn btn-outline-primary" href="{% url 'mailer:mailing_create' %}" role="button">Создать рассылку</a>
+    </div>
+</div>
+<div class="table-responsive small">
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">СООБЩЕНИЕ</th>
+            <th scope="col">ПОЛУЧАТЕЛЕЙ</th>
+            <th scope="col">СТАТУС</th>
+            <th scope="col">&nbsp; ДЕЙСТВИЯ</th>
+            <th scope="col">УПРАВЛЕНИЕ</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for mailing in object_list %}
+        <tr>
+            <td>{{ mailing.id }}</td>
+            <td>{{ mailing.letter.subject | truncatechars:40 }}</td>
+            <td>{{ mailing.recipients.count }}</td>
+            <td>{{ mailing.get_status_display }}</td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="{% url 'mailer:mailing_detail' mailing.pk %}" class="btn btn-link btn-sm">Посмотреть</a>
+                    <a href="{% url 'mailer:mailing_update' mailing.pk %}" class="btn btn-link btn-sm">Изменить</a>
+                    <a href="{% url 'mailer:mailing_delete' mailing.pk %}" class="btn btn-link btn-sm">Удалить</a>
+                </div>
+            </td>
+            {% if mailing.status == 'created' or mailing.status == 'started' %}
+            <td>
+                <form action="{% url 'mailer:send_mail' mailing.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-success">ЗАПУСК</button>
+                </form>
+            </td>
+            {% else %}
+            <td>
+                <button type="button" class="btn btn-outline-secondary" disabled>ЗАПУСК</button>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if is_paginated %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}"><<</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">>></a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+{% endblock %}

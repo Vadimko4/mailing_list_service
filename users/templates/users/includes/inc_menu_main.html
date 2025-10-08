@@ -1,0 +1,124 @@
+<style>
+    .sidebar {
+        height: 100vh; /* Полная высота окна браузера */
+        border-right: 1px solid #ccc; /* Пример границы */
+    }
+</style>
+<div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
+    <div class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu"
+         aria-labelledby="sidebarMenuLabel">
+        <div class="offcanvas-header"><h5 class="offcanvas-title" id="sidebarMenuLabel">Сервис рассылок
+            "Django-Mailer"</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu"
+                    aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+            {% if user.is_authenticated %}
+            <ul class="nav flex-column">
+                {% if perms.users.can_toggle_user_active %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'users:recipient_management' %}">
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="#people"></use>
+                        </svg>
+                        <i class="fas fa-users-cog"></i> Получатели
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'users:mailing_management' %}">
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="#cart"></use>
+                        </svg>
+                        <i class="fas fa-users-cog"></i> Рассылки
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'users:user_management' %}">
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="#people"></use>
+                        </svg>
+                        <i class="fas fa-users-cog"></i> Пользователи
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2 active"
+                       aria-current="page" href="/">
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="#house-fill"></use>
+                        </svg>
+                        Главная
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2"
+                       href="{% url 'mailer:letter_list' user.pk %}">
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="#file-earmark-text"></use>
+                        </svg>
+                        Сообщения
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2"
+                       href="{% url 'mailer:recipient_list' user.pk %}">
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="#people"></use>
+                        </svg>
+                        Получатели
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2"
+                       href="{% url 'mailer:mailing_list' user.pk %}">
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="#cart"></use>
+                        </svg>
+                        Рассылки
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2" href="#">
+                        <svg class="bi" aria-hidden="true">
+                            <use xlink:href="#graph-up"></use>
+                        </svg>
+                        Все попытки
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            {% endif %}
+            <hr class="my-3">
+            <ul class="nav flex-column mb-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <form action="{% url 'users:logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn active nav-link"
+                                style="border:none; background:none; text-decoration:none;">
+                            <svg class="bi" aria-hidden="true">
+                                <use xlink:href="#door-closed"></use>
+                            </svg>
+                            Выход
+                        </button>
+                    </form>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2"
+                                        href="{% url 'users:register' %}">
+                    <svg class="bi" aria-hidden="true">
+                        <use xlink:href="#bi-person-plus"></use>
+                    </svg>
+                    Регистрация
+                </a></li>
+                <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" href="{% url 'users:login' %}">
+                    <svg class="bi" aria-hidden="true">
+                        <use xlink:href="#bi-door-open"></use>
+                    </svg>
+                    Вход
+                </a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
