@@ -1,0 +1,36 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<style>
+    .container {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center;    /* Центрирование по вертикали */
+    height: 100vh;          /* Полная высота окна */
+}
+</style>
+<div class="container">
+<div class="row">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">Просмотр сообщения</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                    <li>Тема письма:</li>
+                    <li>{{ object.subject }}</li>
+                    <li> &nbsp;</li>
+                    <li>Содержание:</li>
+                    <li>{{ object.content }}</li>
+                </ul>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a class="btn btn-outline-primary" href="{% url 'mailer:letter_list' user.pk %}" role="button">Отмена</a>
+                    <a class="btn btn-outline-primary" href="{% url 'mailer:letter_update' letter.pk %}"
+                       role="button">Изменить</a>
+                    <a class="btn btn-outline-primary" href="{% url 'mailer:letter_delete' letter.pk %}"
+                       role="button">Удалить</a>
+                </div>
+            </div>
+        </div>
+</div>
+    </div>
+{% endblock %}

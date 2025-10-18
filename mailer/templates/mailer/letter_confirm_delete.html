@@ -1,0 +1,29 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<style>
+    .container {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center;    /* Центрирование по вертикали */
+    height: 100vh;          /* Полная высота окна */
+}
+</style>
+<div class="container">
+    <div class="row">
+        <form class="row" method="post" enctype="multipart/form-data">
+            <div class="card">
+                <p class="card-text">Действительно хотите удалить письмо: "{{ object.subject }}"</p>
+                <div class="card-body">
+                    {% csrf_token %}
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group mb-4" role="group" aria-label="Basic example">
+                        <button type="submit" class="btn btn-outline-primary">Удалить</button>
+                        <a class="btn btn-outline-primary" href="{% url 'mailer:letter_list' user.pk %}" role="button">Отменить</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
